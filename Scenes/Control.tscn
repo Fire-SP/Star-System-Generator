@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scenes/Object_Node.tscn" type="PackedScene" id=1]
+[ext_resource path="res://external-content.duckduckgo.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Mouse_Detection.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Habitable.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Control.gd" type="Script" id=6]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 7.31977
+
+[node name="Control" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -300.0
+margin_right = -512.0
+margin_bottom = -300.0
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = -23984.0
+margin_top = -10032.0
+margin_right = -18520.0
+margin_bottom = -5848.0
+rect_scale = Vector2( 100, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General" type="Node2D" parent="."]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Node2D" parent="General" instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -2000, -496 )
+scale = Vector2( 2, 2 )
+z_index = 2
+script = null
+
+[node name="Instanced" type="Node2D" parent="General"]
+position = Vector2( -2, 0 )
+
+[node name="Star" type="Sprite" parent="General"]
+texture = ExtResource( 2 )
+
+[node name="Habitable" type="Node2D" parent="General"]
+script = ExtResource( 4 )
+
+[node name="Zone" type="Line2D" parent="General/Habitable"]
+visible = false
+position = Vector2( 480, 1000 )
+scale = Vector2( 1e-05, 1000 )
+points = PoolVector2Array( 0, 0, 0, -16, 0, 16 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Zone2" type="Line2D" parent="General/Habitable"]
+self_modulate = Color( 1, 1, 1, 0.117647 )
+position = Vector2( -16, 992 )
+scale = Vector2( 1, 1000 )
+points = PoolVector2Array( 0, 0, 0, -16, 0, 16 )
+default_color = Color( 0.290196, 1, 0, 1 )
+
+[node name="Zone3" type="Line2D" parent="General/Habitable"]
+self_modulate = Color( 1, 1, 1, 0.117647 )
+position = Vector2( 0, 1000 )
+scale = Vector2( 1, 1000 )
+points = PoolVector2Array( 0, 0, 0, -16, 0, 16 )
+default_color = Color( 0, 0.0627451, 1, 1 )
+
+[node name="Zone4" type="Line2D" parent="General/Habitable"]
+self_modulate = Color( 1, 1, 1, 0.117647 )
+position = Vector2( 0, 1000 )
+scale = Vector2( 1, 1000 )
+points = PoolVector2Array( 0, 0, 0, -16, 0, 16 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Zone5" type="Line2D" parent="General/Habitable"]
+self_modulate = Color( 1, 1, 1, 0.117647 )
+position = Vector2( 0, 1000 )
+scale = Vector2( 1, 1000 )
+points = PoolVector2Array( 0, 0, 0, -16, 0, 16 )
+default_color = Color( 0.290196, 1, 0, 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 3, 3 )
+script = ExtResource( 5 )
+
+[node name="Mouse_Detection" type="Area2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mouse_Detection"]
+shape = SubResource( 1 )
+
+[connection signal="area_entered" from="Mouse_Detection" to="Mouse_Detection" method="_on_Mouse_Detection_area_entered"]
+[connection signal="area_exited" from="Mouse_Detection" to="Mouse_Detection" method="_on_Mouse_Detection_area_exited"]
