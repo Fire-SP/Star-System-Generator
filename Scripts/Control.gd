@@ -26,13 +26,13 @@ func orbit():
 		var node = global.node_list[i]
 		var rotation = global.object_list_main[i][8]
 		node.set_rotation(rotation)
-		global.object_list_main[i][8] += 0.0001/(global.object_list_main[i][0])*10
+		global.object_list_main[i][8] += 0.0001/(global.object_list_main[i][0])*5
 		node.get_child(0).set_rotation(-rotation)
 	
 
 func system_object_determine_atributes():
 	###Setting Variables###
-	global.star_size = rand_range(0.5,2.5)
+	global.star_size = rand_range(0.5,2.25)
 	var star_size = global.star_size
 	var old_number = rand_range(0.01,0.05)*global.star_size
 	var object_outer_bound = global.star_size*40
@@ -47,6 +47,7 @@ func system_object_determine_atributes():
 	var iteration = 0
 	#Main Creation Loop#
 	while object_distance < object_outer_bound:
+		orbit_position = rand_range(0,180)
 		object_distance = (old_number*rand_range(1.2,2.1)+0.01)
 		old_number = object_distance+rand_range(0.1,0.2)
 		var x = rand_range(0,4)
@@ -160,7 +161,7 @@ func system_visuals():
 
 		object.scale = Vector2(scale,scale) # Scales the object sprite
 		node.get_child(0).get_child(1).get_child(0).scale.y = scale*50 # Scales Axial tilt line
-		node.get_child(0).set_position(Vector2((500*global.star_size)+global.object_list_main[i][0]*(500),0))
+		node.get_child(0).set_position(Vector2((1000*global.star_size)+global.object_list_main[i][0]*(500),0))
 		node.get_child(0).get_child(1).set_rotation(global.object_list_main[i][3]/90)
 		
 		var atmosphere = node.get_child(0).get_child(2).get_child(0)

@@ -19,9 +19,9 @@ func _process(delta):
 	if Input.is_action_pressed("ui_period"):
 		zoomed -= 0.02
 		
-	if camera.zoom.x > 10:
-		camera.zoom.x = 10
-		camera.zoom.y = 10
+	if camera.zoom.x > 20:
+		camera.zoom.x = 20
+		camera.zoom.y = 20
 	if camera.zoom.x < 0.1:
 		camera.zoom.x = 0.1
 		camera.zoom.y = 0.1
