@@ -11,15 +11,28 @@ func _process(delta):
 		system_object_determine_atributes()
 		system_visuals()
 		
+	orbit()
+		
+		
 func reset():
 	global.object_list_main.clear()
 	for child in $"/root/Control/General/Instanced".get_children():
 		child.queue_free()
+	global.node_list = []
+		
+	
+func orbit():
+	for i in len(global.node_list):
+		var node = global.node_list[i]
+		var rotation = global.object_list_main[i][8]
+		node.set_rotation(rotation)
+		global.object_list_main[i][8] += 0.0001/(global.object_list_main[i][0])*10
+		node.get_child(0).set_rotation(-rotation)
 	
 
 func system_object_determine_atributes():
 	###Setting Variables###
-	global.star_size = rand_range(0.3,2.5)
+	global.star_size = rand_range(0.5,2.5)
 	var star_size = global.star_size
 	var old_number = rand_range(0.01,0.05)*global.star_size
 	var object_outer_bound = global.star_size*40
@@ -30,7 +43,8 @@ func system_object_determine_atributes():
 	var object_size_modifier = 0
 	var object_atmosphere_modifier = 0
 	var object_water_modifier = 0
-	
+	var orbit_position = 0
+	var iteration = 0
 	#Main Creation Loop#
 	while object_distance < object_outer_bound:
 		object_distance = (old_number*rand_range(1.2,2.1)+0.01)
@@ -102,10 +116,12 @@ func system_object_determine_atributes():
 			object_mass = object_mass*200
 		if object_type == "Ice Giant":
 			object_mass = object_mass*50
+		if iteration > 0:
+			global.object_list_main.append([object_distance,object_mass,object_rotation_period,
+			object_axial_tilt,object_size_modifier,object_type,object_atmosphere_modifier,
+			object_water_modifier,orbit_position])
 			
-		global.object_list_main.append([object_distance,object_mass,object_rotation_period,
-		object_axial_tilt,object_size_modifier,object_type,object_atmosphere_modifier,
-		object_water_modifier])
+		iteration += 1
 		
 		
 func system_visuals():
@@ -119,71 +135,78 @@ func system_visuals():
 		var node = $"/root/Control/General/Node2D".duplicate(true)
 		node.visible = true
 		
-		var color_options = [Color(0.6,0.4,0.2),Color(0.5,0.5,0.8),Color(0.6,0.6,0.6),Color(0.4,0.2,0.4),Color(0.5,0.5,0.8)]
+		randomize()
+		var r = rand_range(-0.05,0.05)
+		var g = rand_range(-0.05,0.05)
+		var b = rand_range(-0.05,0.05)
+		var color_options = [Color(0.6+r,0.4+g,0.2+b),Color(0.5+r,0.5+g,0.8+b),Color(0.6+r,0.6+g,0.6+b),Color(0.4+r,0.2+g,0.4+b),Color(0.6+r,0.85+g,1+b)]
+		var object = node.get_child(0).get_child(1).get_child(1)
+		
 		if object_list_main[i][5] == "Rocky":
-			node.get_child(1).get_child(1).modulate = color_options[0]
+			object.modulate = color_options[0]
 		elif object_list_main[i][5] == "Icy":
-			node.get_child(1).get_child(1).modulate = color_options[1]
+			object.modulate = color_options[1]
 		elif object_list_main[i][5] == "Metallic":
-			node.get_child(1).get_child(1).modulate = color_options[2]
+			object.modulate = color_options[2]
 		elif object_list_main[i][5] == "Gas Giant":
-			node.get_child(1).get_child(1).modulate = color_options[3]
+			object.modulate = color_options[3]
 		elif object_list_main[i][5] == "Ice Giant":
-			node.get_child(1).get_child(1).modulate = color_options[4]
+			object.modulate = color_options[4]
 		
 		if object_list_main[i][5] == "Rocky" or object_list_main[i][5] == "Icy" or object_list_main[i][5] == "Metallic":
 			scale = 0.02*(object_list_main[i][1]*0.3)+0.005
 		elif object_list_main[i][5] == "Gas Giant" or object_list_main[i][5] == "Ice Giant":
 			scale = 0.02*(object_list_main[i][1]*0.006)+0.05
 
+		object.scale = Vector2(scale,scale) # Scales the object sprite
+		node.get_child(0).get_child(1).get_child(0).scale.y = scale*50 # Scales Axial tilt line
+		node.get_child(0).set_position(Vector2((500*global.star_size)+global.object_list_main[i][0]*(500),0))
+		node.get_child(0).get_child(1).set_rotation(global.object_list_main[i][3]/90)
 		
-		node.get_child(1).get_child(1).scale = Vector2(scale,scale) # Scales the object sprite
-		node.get_child(1).get_child(0).scale.y = scale*50 # Scales Axial tilt line
-		node.set_position(Vector2((1150*global.star_size)+global.object_list_main[i][0]*(500),0))
-		node.get_child(1).set_rotation(global.object_list_main[i][3]/90)
-
+		var atmosphere = node.get_child(0).get_child(2).get_child(0)
 		if global.object_list_main[i][6] != "Nonexistent":
-			node.get_child(2).get_child(0).visible = true
+			node.get_child(0).get_child(2).get_child(0).visible = true
 			
 			if global.object_list_main[i][6] == "Extremely Thin" or global.object_list_main[i][6] == "Thin":
-				node.get_child(2).get_child(0).self_modulate = Color(0.6,0.6,0.6,0.1)
-				node.get_child(2).get_child(0).scale = Vector2(scale,scale)*1.2
+				atmosphere.self_modulate = Color(0.6,0.6,0.6,0.1)
+				atmosphere.scale = Vector2(scale,scale)*1.2
 				
 			elif global.object_list_main[i][6] == "Substantial" or global.object_list_main[i][6] == "Thick":
-				node.get_child(2).get_child(0).self_modulate = Color(0.6,0.6,0.6,0.3)
-				node.get_child(2).get_child(0).scale = Vector2(scale,scale)*1.3
+				atmosphere.self_modulate = Color(0.6,0.6,0.6,0.3)
+				atmosphere.scale = Vector2(scale,scale)*1.3
 				
 			elif global.object_list_main[i][6] == "Extremely Thick" or global.object_list_main[i][6] == "Crushing":
-				node.get_child(2).get_child(0).self_modulate = Color(0.6,0.6,0.6,0.8)
-				node.get_child(2).get_child(0).scale = Vector2(scale,scale)*1.4
+				atmosphere.self_modulate = Color(0.6,0.6,0.6,0.8)
+				atmosphere.scale = Vector2(scale,scale)*1.4
 				
 		if global.object_list_main[i][5] == "Gas Giant" or global.object_list_main[i][5] == "Ice Giant":
-			node.get_child(2).get_child(0).visible = false
+			atmosphere.visible = false
 			
+		var water = node.get_child(0).get_child(2).get_child(1)
 		if global.object_list_main[i][5] == "Rocky" or global.object_list_main[i][5] == "Metallic" and global.object_list_main[i][6] != "Extremely Thin" or global.object_list_main[i][6] != "Nonexistent":
-			node.get_child(2).get_child(1).scale = Vector2(scale,scale)*1.1
+			water.scale = Vector2(scale,scale)*1.1
 			
 			if global.object_list_main[i][7] == "Lacustine" or global.object_list_main[i][6] == "Sub-Marine":
-				node.get_child(2).get_child(1).modulate = Color(0,0,0.5,0.2)
-				node.get_child(2).get_child(1).visible = true
+				water.modulate = Color(0,0,0.5,0.2)
+				water.visible = true
 				
 			elif global.object_list_main[i][7] == "Marine":
-				node.get_child(2).get_child(1).modulate = Color(0,0,1.5,0.4)
-				node.get_child(2).get_child(1).visible = true
+				water.modulate = Color(0,0,1.5,0.4)
+				water.visible = true
 				
 			elif global.object_list_main[i][7] == "Oceanic":
-				node.get_child(2).get_child(1).modulate = Color(0,0,5.5,0.6)
-				node.get_child(2).get_child(1).visible = true
-				node.get_child(2).get_child(1).set_z_index(2)
+				water.modulate = Color(0,0,5.5,0.6)
+				water.visible = true
+				water.set_z_index(2)
 				
 			elif global.object_list_main[i][7] == "Hyper Oceanic":
-				node.get_child(2).get_child(1).modulate = Color(0,0,10.5,0.8)
-				node.get_child(2).get_child(1).visible = true
-				node.get_child(2).get_child(1).set_z_index(2)
+				water.modulate = Color(0,0,10.5,0.8)
+				water.visible = true
+				water.set_z_index(2)
 					
 		else:
-			node.get_child(2).get_child(1).visible = false
-		var desc = node.get_child(0)
+			water.visible = false
+		var desc = node.get_child(0).get_child(0)
 		desc.get_child(0).text += str(global.object_list_main[i][4])
 		desc.get_child(0).text += " "
 		desc.get_child(0).text += str(global.object_list_main[i][5])
@@ -207,4 +230,5 @@ func system_visuals():
 		desc.get_child(6).text +=  str(global.object_list_main[i][7])
 
 		$"/root/Control/General/Instanced".add_child(node)
+		global.node_list.append(node)
 		
