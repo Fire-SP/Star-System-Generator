@@ -8,10 +8,13 @@ func _process(delta):
 	if Input.is_action_pressed("ui_down"):
 		direction += Vector2(0,5*camera.zoom.x)
 	if Input.is_action_pressed("ui_up"):
+		linear_velocity += Vector2(0,-1).rotated(get_rotation())
 		direction += Vector2(0,-5*camera.zoom.x)
 	if Input.is_action_pressed("ui_left"):
+		angular_velocity -= 0.1
 		direction += Vector2(-5*camera.zoom.x,0)
 	if Input.is_action_pressed("ui_right"):
+		angular_velocity += 0.1
 		direction += Vector2(5*camera.zoom.x,0)
 		
 	if Input.is_action_pressed("ui_comma"):
@@ -28,6 +31,6 @@ func _process(delta):
 		
 	camera.zoom.x += zoomed
 	camera.zoom.y += zoomed
-	position += direction
 
 	zoomed = 0
+	
