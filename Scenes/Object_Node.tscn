@@ -5,10 +5,10 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 193.351
 
-[sub_resource type="PhysicsMaterial" id=5]
-friction = 0.0
+[sub_resource type="PhysicsMaterial" id=2]
+rough = true
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=3]
 radius = 9.52671
 
 [sub_resource type="CircleShape2D" id=4]
@@ -163,19 +163,20 @@ texture = ExtResource( 1 )
 scale = Vector2( 1.00703, 1 )
 mode = 1
 mass = 100.0
-physics_material_override = SubResource( 5 )
+physics_material_override = SubResource( 2 )
 gravity_scale = 0.0
 contacts_reported = 2
 contact_monitor = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/Surface"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="Area2D" type="Area2D" parent="Area2D/Surface"]
-space_override = 3
 gravity_point = true
 gravity_vec = Vector2( 0, 0 )
 gravity = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
 priority = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/Surface/Area2D"]
