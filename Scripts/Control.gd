@@ -1,5 +1,6 @@
 extends Control
 
+
 func _ready():
 	randomize()
 	system_object_determine_atributes()
@@ -19,7 +20,7 @@ func reset():
 	for child in $"/root/Control/General/Instanced".get_children():
 		child.queue_free()
 	global.node_list = []
-		
+
 	
 func orbit():
 	for i in len(global.node_list):
@@ -165,15 +166,14 @@ func system_visuals():
 		object.scale = Vector2(scale,scale) # Scales the object sprite\
 		node.get_child(0).get_child(4).scale = Vector2(scale*50,scale*50)#scales surface 
 		node.get_child(0).get_child(3).scale = Vector2(scale*40,scale*40)#scales gravity well
-		node.get_child(0).get_child(4).get_child(1).gravity = global.object_list_main[i][1]
+		node.get_child(0).get_child(4).get_child(1).gravity = global.object_list_main[i][1]*8
+		node.get_child(0).get_child(4).get_child(1).gravity_distance_scale = 0.0001
 		
-		if node.get_child(0).gravity > 500:
-			node.get_child(0).gravity = 500
+		if node.get_child(0).gravity > 400:
+			node.get_child(0).gravity = 400
 			
-		if node.get_child(0).gravity < 30:
-			node.get_child(0).gravity = 30
-			
-		print(node.get_child(0).gravity)
+		if node.get_child(0).gravity < 60:
+			node.get_child(0).gravity = 60
 			
 		if object_list_main[i][5] == "Gas Giant" or object_list_main[i][5] == "Ice Giant":
 			node.get_child(0).get_child(3).scale = Vector2(scale*15,scale*15)

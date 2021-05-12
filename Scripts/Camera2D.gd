@@ -3,9 +3,13 @@ extends RigidBody2D
 var recent_body = 0
 var launch = false
 var thrusting = false
+onready var node = preload("res://Scenes/Trail.tscn")
 
 var direction = Vector2(0,0)
 var zoomed = 0
+
+var recent_velocity = 0
+var tick = 0
 
 func _input(event):
 	var camera = get_node("Camera2D")
@@ -26,6 +30,7 @@ func _input(event):
 	camera.zoom.y += zoomed
 
 func _process(delta):
+	tick += 1
 	var camera = get_node("Camera2D")
 	if Input.is_action_pressed("ui_down"):
 		direction += Vector2(0,5*camera.zoom.x)
@@ -60,8 +65,14 @@ func _process(delta):
 				launch = false
 				linear_velocity += Vector2(0,-2).rotated(get_rotation())
 				
+	if launch == false:
+			recent_velocity = linear_velocity
 	
-				
+	if tick > 50:
+		tick = 0
+		var new_node = node.instance()
+		new_node.set_position(get_node("Rocket").get_global_position())
+		get_parent().get_node("Trails").add_child(new_node)
 		
 func _on_RigidBody2D_body_entered(body):
 	launch = true

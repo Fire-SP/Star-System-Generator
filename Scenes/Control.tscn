@@ -173,6 +173,8 @@ width = 50.0
 width_curve = SubResource( 6 )
 default_color = Color( 1, 1, 1, 1 )
 
+[node name="Trails" type="Node2D" parent="."]
+
 [connection signal="area_entered" from="Mouse_Detection" to="Mouse_Detection" method="_on_Mouse_Detection_area_entered"]
 [connection signal="area_exited" from="Mouse_Detection" to="Mouse_Detection" method="_on_Mouse_Detection_area_exited"]
 [connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="_on_RigidBody2D_body_entered"]
