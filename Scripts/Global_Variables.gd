@@ -14,6 +14,7 @@ var object_water_modifier = 0
 var old_number = 0
 var node_list = []
 
+
 var object_types = {
 	1:"Rocky",
 	2:"Icy",
@@ -33,7 +34,7 @@ var object_water_modifiers = {
 	0:"Nonexistent",
 	1:"Arid",
 	2:"Lacustine",
-	3:"Sub-Marine",
+	3:"Sub Marine",
 	4:"Marine",
 	5:"Oceanic",
 	6:"Hyper Oceanic"

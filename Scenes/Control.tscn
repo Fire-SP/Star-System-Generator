@@ -1,11 +1,12 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Object_Node.tscn" type="PackedScene" id=1]
 [ext_resource path="res://external-content.duckduckgo.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Mouse_Detection.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Habitable.gd" type="Script" id=4]
-[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=5]
-[ext_resource path="res://Scripts/Control.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Rocket.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/Main.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/Trails.gd" type="Script" id=7]
 [ext_resource path="res://hollow circle.png" type="Texture" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -14,18 +15,8 @@ radius = 2834.21
 [sub_resource type="CircleShape2D" id=2]
 radius = 7.31977
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 2.92038
-height = 17.62
-
-[sub_resource type="Curve" id=4]
-_data = [ Vector2( 0.111111, 0.5 ), 0.0, 1.71074, 0, 0, Vector2( 0.222222, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.655556, 0 ), 1.83273, 1.83273, 0, 0, Vector2( 0.788889, 0 ), -0.122727, -0.122727, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="Curve" id=5]
-_data = [ Vector2( 0.177778, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.633333, 0.454545 ), 0.0991735, 0.0991735, 0, 0, Vector2( 0.988889, 0.654545 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="Curve" id=6]
-_data = [ Vector2( 0.511111, 0.6 ), 0.0, 0.0, 0, 0, Vector2( 0.777778, 0.0454545 ), 0.0, 0.0, 0, 0 ]
+[sub_resource type="Curve" id=7]
+_data = [ Vector2( 0, 0.390909 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
 [node name="Control" type="Control"]
 anchor_left = 0.5
@@ -67,6 +58,7 @@ position = Vector2( -2, 0 )
 texture = ExtResource( 2 )
 
 [node name="GravityWell" type="Area2D" parent="General/Star"]
+visible = false
 scale = Vector2( 100, 100 )
 space_override = 3
 gravity_point = true
@@ -78,6 +70,7 @@ position = Vector2( -0.00210213, -0.00105102 )
 shape = SubResource( 1 )
 
 [node name="Habitable" type="Node2D" parent="General"]
+visible = false
 script = ExtResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="General/Habitable"]
@@ -134,48 +127,20 @@ script = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mouse_Detection"]
 shape = SubResource( 2 )
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2( 0, 500 )
-rotation = 1.5708
-contacts_reported = 2
-contact_monitor = true
-angular_damp = 3.0
-script = ExtResource( 5 )
-
-[node name="Camera2D" type="Camera2D" parent="RigidBody2D"]
-current = true
-zoom = Vector2( 3, 3 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2( 0, -2 )
-shape = SubResource( 3 )
-
-[node name="Rocket" type="Line2D" parent="RigidBody2D"]
-position = Vector2( 0, 3.97372 )
-scale = Vector2( 0.2, 0.35 )
-points = PoolVector2Array( -0.124268, 3.05498, 0, -40, 0, -64 )
-width = 50.0
-width_curve = SubResource( 4 )
-default_color = Color( 1, 1, 1, 1 )
-
-[node name="Line2D2" type="Line2D" parent="RigidBody2D/Rocket"]
-position = Vector2( 0, 0.127703 )
-scale = Vector2( 1, 1.00471 )
-points = PoolVector2Array( 1.25, 98.0566, 0.15625, 2.90991 )
-width = 30.0
-width_curve = SubResource( 5 )
-default_color = Color( 1, 0.705882, 0.145098, 1 )
-
-[node name="Line2D" type="Line2D" parent="RigidBody2D/Rocket"]
-position = Vector2( -0.0551758, 0.181726 )
-points = PoolVector2Array( 0, -8, 0, -40, 0, -64 )
-width = 50.0
-width_curve = SubResource( 6 )
-default_color = Color( 1, 1, 1, 1 )
+[node name="RigidBody2D" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, 0 )
 
 [node name="Trails" type="Node2D" parent="."]
+script = ExtResource( 7 )
+
+[node name="trail" type="Line2D" parent="Trails"]
+self_modulate = Color( 1, 1, 1, 0.196078 )
+position = Vector2( 0, -4 )
+width_curve = SubResource( 7 )
+default_color = Color( 0.521569, 0.521569, 0.521569, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [connection signal="area_entered" from="Mouse_Detection" to="Mouse_Detection" method="_on_Mouse_Detection_area_entered"]
 [connection signal="area_exited" from="Mouse_Detection" to="Mouse_Detection" method="_on_Mouse_Detection_area_exited"]
-[connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="_on_RigidBody2D_body_entered"]
-[connection signal="body_exited" from="RigidBody2D" to="RigidBody2D" method="_on_RigidBody2D_body_exited"]
