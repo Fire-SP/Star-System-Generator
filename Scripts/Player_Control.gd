@@ -31,26 +31,23 @@ func _input(event):
 	camera.zoom.x += zoomed
 	camera.zoom.y += zoomed
 	
-	get_node("Camera2D/ViewportContainer").set_position(Vector2((-1540*camera.zoom.x)/3,(-900*camera.zoom.y)/3))
-	get_node("Camera2D/ViewportContainer/Viewport/Control/Node2D/Player/Camera2D").zoom = camera.zoom*75
 	var set_size = Vector2((camera.zoom.x)/3,(camera.zoom.x)/3)
-	get_node("Camera2D/ViewportContainer").set_scale(Vector2(set_size))
+	get_node("Camera2D/Control/ViewportContainer").set_position(Vector2((-1540*camera.zoom.x)/3,(-900*camera.zoom.y)/3))
+	get_node("Camera2D/Control/ViewportContainer/Viewport/Control/Node2D/Player/Camera2D").zoom = camera.zoom*75
+	get_node("Camera2D/Control/ViewportContainer").set_scale(Vector2(set_size))
 
 func _process(delta):
 	get_node("Camera2D").set_rotation(-get_rotation())
 	var camera = get_node("Camera2D")
-	if Input.is_action_pressed("ui_down"):
-		direction += Vector2(0,5*camera.zoom.x)
-	if Input.is_action_pressed("ui_up"):
-		thrusting = true
-		linear_velocity += Vector2(0,-1).rotated(get_rotation())
-		direction += Vector2(0,-5*camera.zoom.x)
+	if global.deltav > 0:
+		if Input.is_action_pressed("ui_up"):
+			thrusting = true
+			linear_velocity += Vector2(0,-1).rotated(get_rotation())
+			global.deltav -= 1
 	if Input.is_action_pressed("ui_left"):
 		angular_velocity -= 0.1
-		direction += Vector2(-5*camera.zoom.x,0)
 	if Input.is_action_pressed("ui_right"):
 		angular_velocity += 0.1
-		direction += Vector2(5*camera.zoom.x,0)
 		
 	if Input.is_action_pressed("ui_up") != true:
 		thrusting = false
@@ -72,6 +69,11 @@ func _process(delta):
 				launch = false
 				linear_velocity = Vector2(0,-20).rotated(get_rotation())
 				
+	get_node("Camera2D/Control/ViewportContainer/Speed").text = str(round(sqrt(pow(linear_velocity.x,2)+pow(linear_velocity.y,2))))
+	get_node("Camera2D/Control/ViewportContainer/Speed").text += " m/s"
+	
+	get_node("Camera2D/Control/ViewportContainer/Deltav").text = str(global.deltav)
+	get_node("Camera2D/Control/ViewportContainer/Deltav").text += "m/s of fuel"
 
 func _on_RigidBody2D_body_entered(body):
 	var contact_node = global.node_list.find(body.get_parent().get_parent())
@@ -80,6 +82,9 @@ func _on_RigidBody2D_body_entered(body):
 		launch = true
 		recent_body = body
 		return recent_body
+		
+	if global.object_list_main[contact_node][5] == "Gas Giant" or global.object_list_main[contact_node][5] == "Ice Giant":
+		global.deltav = global.max_deltav
 
 
 func _on_RigidBody2D_body_exited(body):

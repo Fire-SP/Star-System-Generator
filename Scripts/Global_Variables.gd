@@ -15,6 +15,8 @@ var old_number = 0
 var node_list = []
 var node_player = 0
 
+var deltav = 1500
+var max_deltav = 1500
 
 var object_types = {
 	1:"Rocky",

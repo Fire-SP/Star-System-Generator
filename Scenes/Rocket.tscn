@@ -29,7 +29,14 @@ script = ExtResource( 1 )
 current = true
 zoom = Vector2( 3, 3 )
 
-[node name="ViewportContainer" type="ViewportContainer" parent="Camera2D"]
+[node name="Control" type="Control" parent="Camera2D"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Camera2D/Control"]
 margin_left = -1540.0
 margin_top = -900.0
 margin_right = -940.0
@@ -38,12 +45,36 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="Camera2D/ViewportContainer"]
+[node name="Speed" type="Label" parent="Camera2D/Control/ViewportContainer"]
+margin_left = 3.99988
+margin_top = 600.0
+margin_right = 43.9999
+margin_bottom = 614.0
+rect_scale = Vector2( 3, 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Deltav" type="Label" parent="Camera2D/Control/ViewportContainer"]
+anchor_left = 0.643333
+anchor_top = 0.00166667
+anchor_right = 0.643333
+anchor_bottom = 0.00166667
+margin_left = 3.99988
+margin_top = 600.0
+margin_right = 43.9999
+margin_bottom = 614.0
+rect_scale = Vector2( 3, 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="Camera2D/Control/ViewportContainer"]
 size = Vector2( 600, 600 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="Control" parent="Camera2D/ViewportContainer/Viewport" instance=ExtResource( 2 )]
+[node name="Control" parent="Camera2D/Control/ViewportContainer/Viewport" instance=ExtResource( 2 )]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -2 )
