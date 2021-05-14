@@ -15,7 +15,7 @@ radius = 2834.21
 [sub_resource type="CircleShape2D" id=2]
 radius = 7.31977
 
-[sub_resource type="Curve" id=7]
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 0.390909 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
 [node name="Control" type="Control"]
@@ -28,17 +28,6 @@ margin_top = -300.0
 margin_right = -512.0
 margin_bottom = -300.0
 script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Panel" type="Panel" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = -124848.0
-margin_top = -59824.0
-margin_right = -119384.0
-margin_bottom = -55640.0
-rect_scale = Vector2( 100, 100 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -136,7 +125,7 @@ script = ExtResource( 7 )
 [node name="trail" type="Line2D" parent="Trails"]
 self_modulate = Color( 1, 1, 1, 0.196078 )
 position = Vector2( 0, -4 )
-width_curve = SubResource( 7 )
+width_curve = SubResource( 3 )
 default_color = Color( 0.521569, 0.521569, 0.521569, 1 )
 joint_mode = 2
 begin_cap_mode = 2

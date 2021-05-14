@@ -13,6 +13,7 @@ var object_atmosphere_modifier = 0
 var object_water_modifier = 0
 var old_number = 0
 var node_list = []
+var node_player = 0
 
 
 var object_types = {

@@ -9,6 +9,10 @@ var zoomed = 0
 
 var recent_velocity = 0
 
+func _ready():
+	global.node_player = get_node(".") #required in the minimap script.
+	
+
 func _input(event):
 	var camera = get_node("Camera2D")
 	if Input.is_action_pressed("ui_comma") or Input.is_action_pressed("mouse_scroll_down"):
@@ -26,8 +30,14 @@ func _input(event):
 		
 	camera.zoom.x += zoomed
 	camera.zoom.y += zoomed
+	
+	get_node("Camera2D/ViewportContainer").set_position(Vector2((-1540*camera.zoom.x)/3,(-900*camera.zoom.y)/3))
+	get_node("Camera2D/ViewportContainer/Viewport/Control/Node2D/Player/Camera2D").zoom = camera.zoom*75
+	var set_size = Vector2((camera.zoom.x)/3,(camera.zoom.x)/3)
+	get_node("Camera2D/ViewportContainer").set_scale(Vector2(set_size))
 
 func _process(delta):
+	get_node("Camera2D").set_rotation(-get_rotation())
 	var camera = get_node("Camera2D")
 	if Input.is_action_pressed("ui_down"):
 		direction += Vector2(0,5*camera.zoom.x)

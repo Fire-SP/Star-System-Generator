@@ -125,7 +125,7 @@ func system_visuals():
 	
 	for i in len(global.object_list_main):
 		$"/root/Control/General/Star".self_modulate = Color(sin(global.star_size+0.8)*1.1,sin(global.star_size+0.5)*1.1,sin(global.star_size)*1.1)
-		$"/root/Control/General/Star".scale = Vector2(global.star_size*2,global.star_size*2)
+		$"/root/Control/General/Star".scale = Vector2(global.star_size*1.5,global.star_size*1.5)
 		get_node("General/Star/GravityWell").gravity = 0.2*global.star_size*(98)
 		var node = $"/root/Control/General/Node2D".duplicate(true)
 		node.visible = true
