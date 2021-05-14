@@ -15,7 +15,7 @@ var old_number = 0
 var node_list = []
 var node_player = 0
 
-var deltav = 5000
+var deltav = 500
 var max_deltav = 5000
 
 var object_types = {

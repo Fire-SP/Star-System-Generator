@@ -19,13 +19,13 @@ func orbit():
 		var node = global.node_list[i]
 		var rotation = global.object_list_main[i][8]
 		node.set_rotation(rotation)
-		global.object_list_main[i][8] += sqrt((0.5*(global.star_size))/(global.object_list_main[i][0]))/360
+		global.object_list_main[i][8] += sqrt((0.2*(global.star_size))/(global.object_list_main[i][0]))/360
 		node.get_child(0).set_rotation(-rotation)
 	
 
 func system_object_determine_atributes():
 	###Setting Variables###
-	global.star_size = rand_range(0.1,1.75)
+	global.star_size = 3#rand_range(0.1,1.75)
 	var star_size = global.star_size
 	var old_number = rand_range(0.01,0.05)*global.star_size
 	var object_outer_bound = global.star_size*40
@@ -126,9 +126,8 @@ func system_visuals():
 	for i in len(global.object_list_main):
 		$"/root/Control/General/Star".self_modulate = Color(sin(global.star_size+0.8)*1.1,sin(global.star_size+0.5)*1.1,sin(global.star_size)*1.1)
 		$"/root/Control/General/Star".scale = Vector2(global.star_size*1.5,global.star_size*1.5)
-		get_node("General/Star/GravityWell").gravity = global.star_size*(98)
+		get_node("General/Star/GravityWell").gravity = 0.2*global.star_size*(98)
 		var node = $"/root/Control/General/Node2D".duplicate(true)
-		get_node("General").set_scale(Vector2(2,2))
 		node.visible = true
 		
 		randomize()
@@ -150,10 +149,10 @@ func system_visuals():
 			object.modulate = color_options[4]
 		
 		if object_list_main[i][5] == "Rocky" or object_list_main[i][5] == "Icy" or object_list_main[i][5] == "Metallic":
-			scale = 0.04*(object_list_main[i][1]*0.3)+0.015
+			scale = 0.02*(object_list_main[i][1]*0.3)+0.015
 			node.get_child(0).gravity = 50*global.object_list_main[i][1]
 		elif object_list_main[i][5] == "Gas Giant" or object_list_main[i][5] == "Ice Giant":
-			scale = 0.04*(object_list_main[i][1]*0.006)+0.05
+			scale = 0.02*(object_list_main[i][1]*0.006)+0.05
 			node.get_child(0).gravity = 10*global.object_list_main[i][1]
 
 		object.scale = Vector2(scale,scale) # Scales the object sprite\
@@ -173,7 +172,7 @@ func system_visuals():
 			node.get_child(0).get_child(4).get_child(1).gravity = node.get_child(0).get_child(4).get_child(1).gravity*0.1
 			
 		node.get_child(0).get_child(1).get_child(0).scale.y = scale*50 # Scales Axial tilt line
-		node.get_child(0).set_position(Vector2(global.object_list_main[i][0]*(2000),0))
+		node.get_child(0).set_position(Vector2(global.object_list_main[i][0]*(3000),0))
 		node.get_child(0).get_child(1).set_rotation(global.object_list_main[i][3]/90)
 		
 		var atmosphere = node.get_child(0).get_child(2).get_child(0)

@@ -76,7 +76,7 @@ func _process(delta):
 	if recent_body:
 		if launch == true:
 			var x = recent_body.get_global_position()
-			set_position(Vector2(x.x,x.y-(10*recent_body.scale.x)))
+			set_position(Vector2(x.x,x.y-(20*recent_body.scale.x)))
 			set_rotation_degrees(0)
 		
 			if Input.is_action_pressed("ui_up"):
@@ -92,7 +92,7 @@ func _process(delta):
 	
 func thrust_mode():
 	if thrust_mode == 0:
-		var attributes = [0.5,0.1,Color(0.6,0.6,1)] #Thrust, Fuel Consumption
+		var attributes = [0.2,0.1,Color(0.6,0.6,1)] #Thrust, Fuel Consumption
 		return attributes
 	elif thrust_mode == 1:
 		var attributes = [1.5,1.5,Color(1,0.84,0)] #Thrust, Fuel Consumption
