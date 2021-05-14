@@ -19,7 +19,7 @@ func orbit():
 		var node = global.node_list[i]
 		var rotation = global.object_list_main[i][8]
 		node.set_rotation(rotation)
-		global.object_list_main[i][8] += sqrt((0.2*(global.star_size))/(global.object_list_main[i][0]))/360
+		global.object_list_main[i][8] += sqrt((0.5*(global.star_size))/(global.object_list_main[i][0]))/360
 		node.get_child(0).set_rotation(-rotation)
 	
 
@@ -40,7 +40,7 @@ func system_object_determine_atributes():
 	var iteration = 0
 	#Main Creation Loop#
 	while object_distance < object_outer_bound:
-		orbit_position = rand_range(0,180)
+		orbit_position = 0#rand_range(0,180)
 		object_distance = (old_number*rand_range(1.2,2.1)+0.01)
 		old_number = object_distance+rand_range(0.1,0.2)
 		var x = rand_range(0,4)
@@ -126,8 +126,9 @@ func system_visuals():
 	for i in len(global.object_list_main):
 		$"/root/Control/General/Star".self_modulate = Color(sin(global.star_size+0.8)*1.1,sin(global.star_size+0.5)*1.1,sin(global.star_size)*1.1)
 		$"/root/Control/General/Star".scale = Vector2(global.star_size*1.5,global.star_size*1.5)
-		get_node("General/Star/GravityWell").gravity = 0.2*global.star_size*(98)
+		get_node("General/Star/GravityWell").gravity = global.star_size*(98)
 		var node = $"/root/Control/General/Node2D".duplicate(true)
+		get_node("General").set_scale(Vector2(2,2))
 		node.visible = true
 		
 		randomize()
@@ -160,7 +161,6 @@ func system_visuals():
 		node.get_child(0).get_child(3).scale = Vector2(scale*40,scale*40)#scales gravity well
 		node.get_child(0).get_child(4).get_child(1).gravity = global.object_list_main[i][1]*5
 		node.get_child(0).get_child(4).get_child(1).gravity_distance_scale = 0.0001
-		print(global.object_list_main[i][1]*5)
 		
 		if node.get_child(0).gravity > 300:
 			node.get_child(0).gravity = 300
